@@ -8,6 +8,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.SourceDataLine;
 
@@ -41,12 +43,23 @@ public class Server  implements Interface {
         try {
 
            String received = this.input.readLine();
+           count(received);
            System.out.println(received);
-           this.output.writeBytes(received);
+           this.output.writeBytes("Vowels: "+vowels+"\t"+"Consonants: "+consonants);
            client.close();
-
+           
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private void count(String s){ 
+        String vocals = "aeiou";        
+        for (char c:s.toCharArray()){
+            if(vocals.indexOf(c) != -1 ){
+                this.vowels++;
+            }else{
+                this.consonants++;
+            }
         }
     }
 }
