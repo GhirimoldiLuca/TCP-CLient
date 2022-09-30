@@ -1,49 +1,59 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 
-public class Client {
-
-    private Socket socket;
-    private int serverPort = 6666;
-    private String serverName = "localhost";
-    private BufferedReader dataIn;
-    private DataOutputStream dataOut;
-    private String dataInput;
-    private String dataOutput;
+public class Client implements Interface {
+    private int attempts = 0;
+    private Socket client = null;
+    private InetAddress ip;
     private static Scanner sc = new Scanner(System.in);
-
-    protected Socket connect() throws IOException{
-        this.socket = new Socket(serverName,serverPort);
-        this.dataOut = new DataOutputStream(socket.getOutputStream());
-        this.dataIn = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+    private DataOutputStream out;
+    private BufferedReader in;
     
-        return this.socket;
+    protected void connect() {
+        try {
+            this.ip = InetAddress.getLocalHost();
+            while (this.attempts < 3 || this.client == null) {
+                this.client = new Socket(ip, PORT);
+                this.attempts++;
+            }
+            if(this.attempts == 5 || this.client == null){
+                throw new IOException("Can't estabilish connection with server!");
+            }else {
+                System.out.println("Connected to the server!");
+            }   
+
+            this.out = new DataOutputStream(this.client.getOutputStream());
+            this.in = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
+        } catch (UnknownHostException e) {
+            System.err.println("Unknown local host address");
+            System.exit(2);
+        }
+        catch(IOException e){
+            System.err.println(e.getMessage());
+            System.exit(3);
+        }
     }
-
     protected void communicate(){
-        try{
-            System.out.print("Enter the message to send: ");
-            this.dataInput = sc.nextLine();
-
-            System.out.println("Messagge sent to the server!");
-            this.dataOut.writeBytes(this.dataInput);
-
-            this.dataOutput = this.dataIn.readLine();
-            System.out.println("Server response: "+"\n"+this.dataOutput);
-            System.out.println("Connection closed!");
-            this.socket.close();
-
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            System.out.println("Error during communication with server");
-            System.exit(1);
+        
+        System.out.print("Enter text to send to the server:");
+            
+        try {
+            String test = sc.nextLine();
+            this.out.writeBytes(test);
+            String received = this.in.readLine();
+            System.out.println(received);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    
 }
