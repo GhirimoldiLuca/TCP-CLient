@@ -43,7 +43,7 @@ public class Server  implements Interface {
         try {
 
            String received = this.input.readLine();
-           count(received);
+           count(received.toLowerCase());
            System.out.println(received);
            this.output.writeBytes("Vowels: "+vowels+"\t"+"Consonants: "+consonants);
            client.close();
@@ -53,13 +53,10 @@ public class Server  implements Interface {
         }
     }
     private void count(String s){ 
-        String vocals = "aeiou";        
-        for (char c:s.toCharArray()){
-            if(vocals.indexOf(c) != -1 ){
-                this.vowels++;
-            }else{
-                this.consonants++;
-            }
-        }
+        int start = s.length();
+        int vowelsCount = (start - s.replaceAll("[aeiou]", s).length());
+        vowels+=vowelsCount;
+        consonants+= start-vowelsCount;
+
     }
 }
