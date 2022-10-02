@@ -25,7 +25,7 @@ public class Client implements Interface {
                 this.client = new Socket(ip, PORT);
                 this.attempts++;
             }
-            if(this.attempts == 5 || this.client == null){
+            if(this.attempts == 3 || this.client == null){
                 throw new IOException("Can't estabilish connection with server!");
             }else {
                 System.out.println("Connected to the server!");
