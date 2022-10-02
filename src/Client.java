@@ -41,18 +41,17 @@ public class Client implements Interface {
             System.err.println(e.getMessage());
             System.exit(3);
         }
-    }
-    protected void communicate(){
-        
         System.out.print("Enter text to send to the server:");
             
-        try {
-            String test = sc.nextLine();
-            this.out.writeBytes(test);
+        
+    }
+    protected void communicate(){
+        try{
+            this.out.writeBytes(sc.nextLine());
             String received = this.in.readLine();
             System.out.println(received);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 

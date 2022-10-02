@@ -39,27 +39,24 @@ public class Server  implements Interface {
         }
     }
     protected void communicate(){
-        
         try {
 
-           String received = this.input.readLine();
-           count(received);
-           System.out.println(received);
-           this.output.writeBytes("Vowels: "+vowels+"\t"+"Consonants: "+consonants);
-           client.close();
+            String received = this.input.readLine();
+            count(received.toLowerCase());
+            this.output.writeBytes("Vowels: "+Server.vowels+"\t"+"Consonants: "+Server.consonants);
+            System.out.println(this.input.readLine());
+            client.close();
            
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
+        
+        
     }
     private void count(String s){ 
-        String vocals = "aeiou";        
-        for (char c:s.toCharArray()){
-            if(vocals.indexOf(c) != -1 ){
-                this.vowels++;
-            }else{
-                this.consonants++;
-            }
-        }
+        int start = s.length();
+        int vowelsCount = (start - s.replaceAll("[aeiou]", "").length());
+        vowels+=vowelsCount;
+        consonants+= start-vowelsCount;
     }
 }
