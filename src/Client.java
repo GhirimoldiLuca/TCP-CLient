@@ -60,7 +60,7 @@ public class Client implements Interface {
 
     /**
      * Send a String to the Server, 
-     * Receive a String containing the count of vowels and consonants of the messages sent to the server
+     * Receive a String containing the count of vowels and consonants of the messages sent
      */
     protected void communicate() {
         try {

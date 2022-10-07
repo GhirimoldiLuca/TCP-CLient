@@ -45,7 +45,7 @@ public class Server implements Interface {
     }
 
     /**
-     * Receive a String from the client
+     * Receive a String from the Client
      * Invocation count() function, by passing the lowercase received String
      * Send a String to the Client and close the Client {@link Socket} 
      * 
@@ -55,7 +55,6 @@ public class Server implements Interface {
      */
     protected void communicate() {
         try {
-
             String received = this.input.readLine();
             count(received.toLowerCase());
             this.output.writeBytes("Vowels: " + Server.vowels + "\t" + "Consonants: " + Server.consonants + "\n");
@@ -67,8 +66,10 @@ public class Server implements Interface {
     }
 
     /**
-     * Count the number of the vowels and 
+     * Count the number of the vowels and consonants
      *
+     * @param String s - messagge
+     * 
      * @return  void    [return description]
      */
     private void count(String s) {
@@ -78,6 +79,9 @@ public class Server implements Interface {
         consonants += start - vowelsCount;
     }
 
+    /**
+     * Start the server process
+     */
     public static void main(String[] args) {
         Server server = new Server();
         server.launch();
