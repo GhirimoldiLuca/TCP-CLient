@@ -6,7 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Server process for exchange Strings through the {@link Socket} with the Client
+ * Server process for exchange Strings through the {@link Socket} with the client
+ * Server counts the number of vowels and consonants of the received {@link String}, closing the connection when the number of vowels is half that of consonants
  * 
  * @author Ghirimoldi Luca
  * 
@@ -15,54 +16,59 @@ import java.net.Socket;
  */
 public class Server implements Interface {
     ServerSocket server = null;
-    private static int vowels = 0, consonants = 0;
-    private int attempts = 0;
     Socket client = null;
-
-    private BufferedReader input = null;
-    private DataOutputStream output = null;
+    BufferedReader input = null;
+    DataOutputStream output = null;
+    static int vowels = 0;
+    static int consonants = 0;
+    int attempts = 0;
 
     /**
      * Launch the {@link ServerSocket} with
-     * @param PORT 
+     * 
+     * @param PORT server port
      * Wait for a client {@link Socket} request
      * Saving the {@link InputStream} {@link OutputStream}
      * @throws IOException
      */
-    protected Socket launch() {
+    public Socket launch() {
         try {
             server = new ServerSocket(PORT);
-            this.client = server.accept();
+            client = server.accept();
             server.close();
 
-            this.input = new BufferedReader(new InputStreamReader(this.client.getInputStream()));
-            this.output = new DataOutputStream(this.client.getOutputStream());
+            input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            output = new DataOutputStream(client.getOutputStream());
         } catch (IOException e) {
             System.err.println(e.getMessage());
             System.exit(3);
         }
-        return this.client;
+        return client;
     }
 
     /**
      * Receive a String from the Client
      * Invocation count() function, by passing the lowercase received String
-     * Send a String to the Client and close the Client {@link Socket} 
+     * Send a String to the Client and close the Client {@link Socket}
      * 
      * Handling the {@link IOException}
-     *  
-     * @return  void    [return description]
+     * 
+     * @return void [return description]
      */
-    protected void communicate() {
+    public void comunica() {
         try {
-            String received = this.input.readLine();
-            count(received.toLowerCase());
-            this.output.writeBytes("Vowels: " + Server.vowels + "\t" + "Consonants: " + Server.consonants + "\n");
+            do {
+                String received = input.readLine();
+                count(received.toLowerCase());
+                System.out.println(received);
+                output.writeBytes("\tVowels: " + vowels + "\t" + "Consonants: " + consonants + "\n");
+            } while ((vowels != consonants / 2));
             client.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("[SERVER]\tErrore durante la connessione");
+            System.exit(1);
         }
-
     }
 
     /**
@@ -70,21 +76,22 @@ public class Server implements Interface {
      *
      * @param String s - messagge
      * 
-     * @return  void    [return description]
+     * @return void [return description]
      */
-    private void count(String s) {
+    void count(String s) {
         int start = s.length();
+        int numbers = s.replaceAll("\\D", "").length();
         int vowelsCount = (start - s.replaceAll("[aeiou]", "").length());
         vowels += vowelsCount;
-        consonants += start - vowelsCount;
+        consonants += start - vowelsCount - numbers;
     }
 
     /**
      * Start the server process
      */
-    public static void main(String[] args) {
+    public static void main(String args[]) {
         Server server = new Server();
         server.launch();
-        server.communicate();
+        server.comunica();
     }
 }
