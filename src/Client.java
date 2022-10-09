@@ -68,12 +68,13 @@ public class Client implements Interface {
             do {
                 System.out.print("- Enter text to send to the server: ");
                 String text = keyboard.readLine();
+                text=text.replaceAll("[^a-zA-Z]", "");
                 out.writeBytes(text + "\n");
                 out.flush();
                 String received = in.readLine();
                 System.out.println(received);
                 letters=received.replaceAll("\\D", "");
-            }while ((!((Integer.parseInt(Character.toString(letters.charAt(1)))) == (2*Integer.parseInt(Character.toString(letters.charAt(0))))))); // ugly condition
+            }while ((!((Integer.parseInt(Character.toString(letters.charAt(1)))/2) == (Integer.parseInt(Character.toString(letters.charAt(0))))))); // ugly condition
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
