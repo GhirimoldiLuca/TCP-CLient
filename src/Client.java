@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
  * @version 1.1.3
  * @since 2022-09-24
  */
-public class Client implements Interface {
+public class Client {
     int attempts = 0;
     Socket client;
     InetAddress ip;
@@ -22,11 +22,19 @@ public class Client implements Interface {
     DataOutputStream out;
     BufferedReader in;
     String letters = "";
+    int PORT = 6666;
+    
+    /**
+     * Default constructor
+     */
+    public Client(){}
+
+
     /**
      * Create the {@link Socket} @param {@link InetAddress}, @param PORT}
-     * which try to estabilish the connection with the {@link ServerSocket} 3 times.
+     * which try to estabilish the connection with the { @link ServerSocket} // todo not working 3 times.
      * 
-     * Handling the {@link UnUnknownHostException} , {@link IOException}
+     * Handling the {@link UnknownHostException} , {@link IOException}
      * 
      * @return {@link Socket}
      * 
@@ -83,6 +91,8 @@ public class Client implements Interface {
 
     /**
      * Start the client process
+     *
+     * @param args argument (no use)
      */
     public static void main(String[] args) {
         Client client = new Client();

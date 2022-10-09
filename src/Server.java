@@ -14,7 +14,7 @@ import java.net.Socket;
  * @version 1.1.3
  * @since 2022-09-25
  */
-public class Server implements Interface {
+public class Server{
     ServerSocket server = null;
     Socket client = null;
     BufferedReader input = null;
@@ -22,14 +22,20 @@ public class Server implements Interface {
     static int vowels = 0;
     static int consonants = 0;
     int attempts = 0;
+    int PORT = 6666;
 
     /**
-     * Launch the {@link ServerSocket} with
-     * 
-     * @param PORT server port
+     * Default constructor
+     */
+    public Server(){}
+    
+    /**
+     * Launch the { @link ServerSocket} // todo not working
      * Wait for a client {@link Socket} request
-     * Saving the {@link InputStream} {@link OutputStream}
-     * @throws IOException
+     * Saving the { @link InputStream} { @link OutputStream} // todo not working
+     * Handling {@link IOException} { @link ServerSocket} // todo not working// port already used or in/out stream error
+     * 
+     * @return {@link Socket}
      */
     public Socket launch() {
         try {
@@ -51,9 +57,8 @@ public class Server implements Interface {
      * Invocation count() function, by passing the lowercase received String
      * Send a String to the Client and close the Client {@link Socket}
      * 
-     * Handling the {@link IOException}
+     * Handling the {@link Exception}
      * 
-     * @return void [return description]
      */
     public void comunica() {
         try {
@@ -76,9 +81,8 @@ public class Server implements Interface {
      *
      * @param String s - messagge
      * 
-     * @return void [return description]
      */
-    void count(String s) {
+    private void count(String s) {
         int start = s.length();
         int numbers = s.replaceAll("\\D", "").length();
         int vowelsCount = (start - s.replaceAll("[aeiou]", "").length());
@@ -88,6 +92,7 @@ public class Server implements Interface {
 
     /**
      * Start the server process
+     * @param args argument (no use)
      */
     public static void main(String args[]) {
         Server server = new Server();
