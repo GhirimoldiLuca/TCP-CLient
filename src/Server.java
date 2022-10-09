@@ -60,8 +60,8 @@ public class Server implements Interface {
             do {
                 String received = input.readLine();
                 count(received.toLowerCase());
-                System.out.println(received);
                 output.writeBytes("\tVowels: " + vowels + "\t" + "Consonants: " + consonants + "\n");
+                System.out.println(received);
             } while ((vowels != consonants / 2));
             client.close();
         } catch (Exception e) {
