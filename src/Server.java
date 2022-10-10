@@ -71,7 +71,7 @@ public class Server{
             client.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("[SERVER]\tErrore durante la connessione");
+            System.out.println("[SERVER]\tError during comunication");
             System.exit(1);
         }
     }
