@@ -60,7 +60,7 @@ public class Server{
      * Handling the {@link Exception}
      * 
      */
-    public void comunica() {
+    public void comunicate() {
         try {
             do {
                 String received = input.readLine();
@@ -97,6 +97,6 @@ public class Server{
     public static void main(String args[]) {
         Server server = new Server();
         server.launch();
-        server.comunica();
+        server.comunicate();
     }
 }
